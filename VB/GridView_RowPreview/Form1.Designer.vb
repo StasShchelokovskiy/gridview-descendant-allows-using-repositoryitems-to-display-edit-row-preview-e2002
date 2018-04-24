@@ -29,9 +29,9 @@
             Me.gridColumn2 = New DevExpress.XtraGrid.Columns.GridColumn()
             Me.gridColumn3 = New DevExpress.XtraGrid.Columns.GridColumn()
             Me.repositoryItemMemoEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit()
-            DirectCast(Me.customGridControl1, System.ComponentModel.ISupportInitialize).BeginInit()
-            DirectCast(Me.customGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
-            DirectCast(Me.repositoryItemMemoEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.customGridControl1, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.customGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.repositoryItemMemoEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             ' 
             ' customGridControl1
@@ -87,9 +87,9 @@
             Me.Controls.Add(Me.customGridControl1)
             Me.Name = "Form1"
             Me.Text = "Form1"
-            DirectCast(Me.customGridControl1, System.ComponentModel.ISupportInitialize).EndInit()
-            DirectCast(Me.customGridView1, System.ComponentModel.ISupportInitialize).EndInit()
-            DirectCast(Me.repositoryItemMemoEdit1, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.customGridControl1, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.customGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.repositoryItemMemoEdit1, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub

@@ -137,10 +137,10 @@ Namespace CustomGrid_PreviewRow
             End If
             Try
                 Me.postingEditorValue += 1
-                If ActiveEditor Is Nothing OrElse (Not EditingValueModified) OrElse Me.fEditingCell IsNot Nothing Then
+                If ActiveEditor Is Nothing OrElse Not EditingValueModified OrElse Me.fEditingCell IsNot Nothing Then
                     Return result
                 End If
-                If causeValidation AndAlso (Not ValidateEditor()) Then
+                If causeValidation AndAlso Not ValidateEditor() Then
                     Return False
                 End If
                 SetRowPreviewValueCore(FocusedRowHandle, EditingValue)
@@ -282,7 +282,7 @@ Namespace CustomGrid_PreviewRow
             End If
         End Function
         Protected Overridable Function CalcRowPreviewEditorHeight(ByVal rowHandle As Integer, ByVal item As RepositoryItem) As Integer
-            If (Not View.OptionsView.ShowPreview) OrElse View.IsGroupRow(rowHandle) OrElse View.IsFilterRow(rowHandle) Then
+            If Not View.OptionsView.ShowPreview OrElse View.IsGroupRow(rowHandle) OrElse View.IsFilterRow(rowHandle) Then
                 Return 0
             End If
             Dim res As Integer = (If(View.OptionsView.ShowPreviewRowLines <> DevExpress.Utils.DefaultBoolean.False, 1, 0))
