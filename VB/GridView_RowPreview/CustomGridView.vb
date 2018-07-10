@@ -231,6 +231,9 @@ Namespace CustomGrid_PreviewRow
     Public Class CustomGridViewInfo
         Inherits GridViewInfo
 
+        Friend Const PreviewTextIndentNotScaled As Integer = 2
+        Friend Const PreviewTextVIndentNotScaled As Integer = 1
+
         Private fRowPreviewViewInfo As BaseEditViewInfo
         Public Sub New(ByVal gridView As GridView)
             MyBase.New(gridView)
@@ -241,6 +244,12 @@ Namespace CustomGrid_PreviewRow
                 Return TryCast(MyBase.View, CustomGridView)
             End Get
         End Property
+        Public Function GetPreviewTextIndent() As Integer
+            Return ScaleHorizontal(PreviewTextIndentNotScaled)
+        End Function
+        Public Function GetPreviewTextVIndent() As Integer
+            Return ScaleVertical(PreviewTextVIndentNotScaled)
+        End Function
         Public Overridable Sub UpdateRowPreviewEdit(ByVal item As RepositoryItem)
             If item IsNot Nothing Then
                 fRowPreviewViewInfo = CreateRowPreviewViewInfo(item)
@@ -268,7 +277,7 @@ Namespace CustomGrid_PreviewRow
         End Function
         Public Overridable Function GetRowPreviewEditBounds(ByVal ri As GridDataRowInfo) As Rectangle
             Dim r As New Rectangle(New Point(0, 0), ri.PreviewBounds.Size)
-            r.Inflate(-GridRowPreviewPainter.PreviewTextIndent, -GridRowPreviewPainter.PreviewTextVIndent)
+            r.Inflate(-GetPreviewTextIndent(), -GetPreviewTextVIndent())
             r.X += ri.PreviewIndent
             r.Width -= ri.PreviewIndent
             Return r
@@ -295,13 +304,13 @@ Namespace CustomGrid_PreviewRow
                 Dim ha As IHeightAdaptable = TryCast(fRowPreviewViewInfo, IHeightAdaptable)
                 If ha IsNot Nothing Then
                     fRowPreviewViewInfo.EditValue = View.GetRowPreviewValue(rowHandle)
-                    res = ha.CalcHeight(GInfo.Cache, Me.CalcRowPreviewWidth(rowHandle) - Me.PreviewIndent - GridRowPreviewPainter.PreviewTextIndent * 2)
+                    res = ha.CalcHeight(GInfo.Cache, Me.CalcRowPreviewWidth(rowHandle) - Me.PreviewIndent - GetPreviewTextIndent() * 2)
                 End If
                 res = Math.Max(fRowPreviewViewInfo.CalcMinHeight(g), res)
             Finally
                 GInfo.ReleaseGraphics()
             End Try
-            res += GridRowPreviewPainter.PreviewTextVIndent * 2
+            res += GetPreviewTextVIndent() * 2
             Return res
         End Function
         Protected Overrides Sub CalcRowHitInfo(ByVal pt As Point, ByVal ri As GridRowInfo, ByVal hi As GridHitInfo)
