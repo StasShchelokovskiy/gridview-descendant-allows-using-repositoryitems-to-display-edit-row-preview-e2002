@@ -199,6 +199,9 @@ namespace CustomGrid_PreviewRow
     }
     public class CustomGridViewInfo : GridViewInfo
     {
+        internal const int PreviewTextIndentNotScaled = 2;
+        internal const int PreviewTextVIndentNotScaled = 1;
+		
         BaseEditViewInfo fRowPreviewViewInfo;
         public CustomGridViewInfo(GridView gridView)
             : base(gridView)
@@ -206,6 +209,12 @@ namespace CustomGrid_PreviewRow
             UpdateRowPreviewEdit(View.PreviewRowEdit);
         }
         public virtual new CustomGridView View { get { return base.View as CustomGridView; } }
+        public int GetPreviewTextIndent() {
+            return ScaleHorizontal(PreviewTextIndentNotScaled);
+        }
+        public int GetPreviewTextVIndent() {
+            return ScaleVertical(PreviewTextVIndentNotScaled);
+        }
         public virtual void UpdateRowPreviewEdit(RepositoryItem item)
         {
             if (item != null)
@@ -239,7 +248,7 @@ namespace CustomGrid_PreviewRow
         public virtual Rectangle GetRowPreviewEditBounds(GridDataRowInfo ri)
         {
             Rectangle r = new Rectangle(new Point(0, 0), ri.PreviewBounds.Size);
-            r.Inflate(-GridRowPreviewPainter.PreviewTextIndent, -GridRowPreviewPainter.PreviewTextVIndent);
+            r.Inflate(-GetPreviewTextIndent(), -GetPreviewTextVIndent());
             r.X += ri.PreviewIndent;
             r.Width -= ri.PreviewIndent;
             return r;
@@ -265,7 +274,7 @@ namespace CustomGrid_PreviewRow
                 if (ha != null)
                 {
                     fRowPreviewViewInfo.EditValue = View.GetRowPreviewValue(rowHandle);
-                    res = ha.CalcHeight(GInfo.Cache, this.CalcRowPreviewWidth(rowHandle) - this.PreviewIndent - GridRowPreviewPainter.PreviewTextIndent * 2);
+                    res = ha.CalcHeight(GInfo.Cache, this.CalcRowPreviewWidth(rowHandle) - this.PreviewIndent - GetPreviewTextIndent() * 2);
                 }
                 res = Math.Max(fRowPreviewViewInfo.CalcMinHeight(g), res);
             }
@@ -273,7 +282,7 @@ namespace CustomGrid_PreviewRow
             {
                 GInfo.ReleaseGraphics();
             }
-            res += GridRowPreviewPainter.PreviewTextVIndent * 2;
+            res += GetPreviewTextVIndent() * 2;
             return res;
         }
         protected override void CalcRowHitInfo(Point pt, GridRowInfo ri, GridHitInfo hi)
