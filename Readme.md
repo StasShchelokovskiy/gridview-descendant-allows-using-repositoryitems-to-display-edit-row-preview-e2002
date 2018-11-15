@@ -1,3 +1,10 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [CustomGridView.cs](./CS/GridView_RowPreview/CustomGridView.cs) (VB: [CustomGridView.vb](./VB/GridView_RowPreview/CustomGridView.vb))
+* [Form1.cs](./CS/GridView_RowPreview/Form1.cs) (VB: [Form1.vb](./VB/GridView_RowPreview/Form1.vb))
+* [Program.cs](./CS/GridView_RowPreview/Program.cs) (VB: [Program.vb](./VB/GridView_RowPreview/Program.vb))
+<!-- default file list end -->
 # GridView descendant allows using RepositoryItems to display/edit Row Preview
 
 
