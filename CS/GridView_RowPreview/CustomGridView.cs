@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using DevExpress.XtraGrid.Columns;
@@ -249,8 +249,9 @@ namespace CustomGrid_PreviewRow
         {
             Rectangle r = new Rectangle(new Point(0, 0), ri.PreviewBounds.Size);
             r.Inflate(-GetPreviewTextIndent(), -GetPreviewTextVIndent());
-            r.X += ri.PreviewIndent;
-            r.Width -= ri.PreviewIndent;
+            int previewIndent = Painter.ElementsPainter.RowPreview.GetPreviewIndent(this);
+            r.X += previewIndent;
+            r.Width -= previewIndent;
             return r;
         }
         public override int CalcRowPreviewHeight(int rowHandle)
@@ -274,7 +275,7 @@ namespace CustomGrid_PreviewRow
                 if (ha != null)
                 {
                     fRowPreviewViewInfo.EditValue = View.GetRowPreviewValue(rowHandle);
-                    res = ha.CalcHeight(GInfo.Cache, this.CalcRowPreviewWidth(rowHandle) - this.PreviewIndent - GetPreviewTextIndent() * 2);
+                    res = ha.CalcHeight(GInfo.Cache, this.CalcRowPreviewWidth(rowHandle) - Painter.ElementsPainter.RowPreview.GetPreviewTextHorizontalPadding(this)*2 - Painter.ElementsPainter.RowPreview.GetPreviewIndent(this)); 
                 }
                 res = Math.Max(fRowPreviewViewInfo.CalcMinHeight(g), res);
             }
@@ -282,12 +283,8 @@ namespace CustomGrid_PreviewRow
             {
                 GInfo.ReleaseGraphics();
             }
-            res += GetPreviewTextVIndent() * 2;
+            res += Painter.ElementsPainter.RowPreview.GetPreviewTextVerticalPadding(this) * 2;
             return res;
-        }
-        protected override void CalcRowHitInfo(Point pt, GridRowInfo ri, GridHitInfo hi)
-        {
-            base.CalcRowHitInfo(pt, ri, hi);
         }
     }
     public class CustomGridHandler : GridHandler
