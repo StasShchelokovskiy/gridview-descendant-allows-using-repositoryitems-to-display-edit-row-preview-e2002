@@ -278,8 +278,9 @@ Namespace CustomGrid_PreviewRow
         Public Overridable Function GetRowPreviewEditBounds(ByVal ri As GridDataRowInfo) As Rectangle
             Dim r As New Rectangle(New Point(0, 0), ri.PreviewBounds.Size)
             r.Inflate(-GetPreviewTextIndent(), -GetPreviewTextVIndent())
-            r.X += ri.PreviewIndent
-            r.Width -= ri.PreviewIndent
+        Dim previewIndent As Integer = Painter.ElementsPainter.RowPreview.GetPreviewIndent(Me)
+			r.X += previewIndent
+			r.Width -= previewIndent
             Return r
         End Function
         Public Overrides Function CalcRowPreviewHeight(ByVal rowHandle As Integer) As Integer
@@ -291,31 +292,28 @@ Namespace CustomGrid_PreviewRow
             End If
         End Function
         Protected Overridable Function CalcRowPreviewEditorHeight(ByVal rowHandle As Integer, ByVal item As RepositoryItem) As Integer
-            If Not View.OptionsView.ShowPreview OrElse View.IsGroupRow(rowHandle) OrElse View.IsFilterRow(rowHandle) Then
-                Return 0
-            End If
-            Dim res As Integer = (If(View.OptionsView.ShowPreviewRowLines <> DevExpress.Utils.DefaultBoolean.False, 1, 0))
-            Dim eventHeight As Integer = View.RaiseMeasurePreviewHeightAccessMetod(rowHandle)
-            If eventHeight <> -1 Then
-                Return If(eventHeight = 0, 0, res + eventHeight)
-            End If
-            Dim g As Graphics = GInfo.AddGraphics(Nothing)
-            Try
-                Dim ha As IHeightAdaptable = TryCast(fRowPreviewViewInfo, IHeightAdaptable)
-                If ha IsNot Nothing Then
-                    fRowPreviewViewInfo.EditValue = View.GetRowPreviewValue(rowHandle)
-                    res = ha.CalcHeight(GInfo.Cache, Me.CalcRowPreviewWidth(rowHandle) - Me.PreviewIndent - GetPreviewTextIndent() * 2)
-                End If
-                res = Math.Max(fRowPreviewViewInfo.CalcMinHeight(g), res)
-            Finally
-                GInfo.ReleaseGraphics()
-            End Try
-            res += GetPreviewTextVIndent() * 2
-            Return res
-        End Function
-        Protected Overrides Sub CalcRowHitInfo(ByVal pt As Point, ByVal ri As GridRowInfo, ByVal hi As GridHitInfo)
-            MyBase.CalcRowHitInfo(pt, ri, hi)
-        End Sub
+           If (Not View.OptionsView.ShowPreview) OrElse View.IsGroupRow(rowHandle) OrElse View.IsFilterRow(rowHandle) Then
+				Return 0
+			End If
+			Dim res As Integer = (If(View.OptionsView.ShowPreviewRowLines <> DevExpress.Utils.DefaultBoolean.False, 1, 0))
+			Dim eventHeight As Integer = View.RaiseMeasurePreviewHeightAccessMetod(rowHandle)
+			If eventHeight <> -1 Then
+				Return If(eventHeight = 0, 0, res + eventHeight)
+			End If
+			Dim g As Graphics = GInfo.AddGraphics(Nothing)
+			Try
+				Dim ha As IHeightAdaptable = TryCast(fRowPreviewViewInfo, IHeightAdaptable)
+				If ha IsNot Nothing Then
+					fRowPreviewViewInfo.EditValue = View.GetRowPreviewValue(rowHandle)
+					res = ha.CalcHeight(GInfo.Cache, Me.CalcRowPreviewWidth(rowHandle) - Painter.ElementsPainter.RowPreview.GetPreviewTextHorizontalPadding(Me)*2 - Painter.ElementsPainter.RowPreview.GetPreviewIndent(Me))
+				End If
+				res = Math.Max(fRowPreviewViewInfo.CalcMinHeight(g), res)
+			Finally
+				GInfo.ReleaseGraphics()
+			End Try
+			res += Painter.ElementsPainter.RowPreview.GetPreviewTextVerticalPadding(Me) * 2
+			Return res
+		End Function
     End Class
     Public Class CustomGridHandler
         Inherits GridHandler
